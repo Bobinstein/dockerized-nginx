@@ -12,10 +12,6 @@ NOTE: This process is designed to only get a certificate for the base domain ini
     - Download the latest GitHub CLI release from the [GitHub CLI repo](https://github.com/cli/cli/releases/tag/v2.31.0). Choose the .msi installer for Windows.
     - Once downloaded, run the .msi installer and follow the instructions to install GitHub CLI on your system.
     - After installation, you can verify the installation by opening a new command prompt or PowerShell window and typing `gh --version`. This should display the installed version of GitHub CLI.
-- Git: While GitHub CLI is a tool specifically designed for interacting with GitHub, it doesn't replace Git. To install Git, follow these steps:
-    - Download the latest Git for Windows installer from the Git official website.
-    - Run the installer and follow the prompts to install Git. You can leave all the options at their defaults.
-    - After installation, open a new command prompt or PowerShell window and type `git --version` to verify the installation. It should display the installed version of Git.
 
 ## Setup Instructions
 
