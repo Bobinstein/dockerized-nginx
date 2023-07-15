@@ -10,13 +10,14 @@ COPY init-letsencrypt.sh /usr/local/bin/init-letsencrypt.sh
 # Copy the Nginx configuration template
 COPY nginx/app.conf.template /app/data/nginx/app.conf.template
 
-# Install certbot for SSL certificates generation
+# Install certbot for SSL certificates generation and cron for scheduling
 RUN apt-get update && \
     apt-get install -y \
     certbot \
     python3-certbot-nginx \
     openssl \
-    gettext-base
+    gettext-base \
+    cron
 
 # Set necessary permissions for the initialization script
 RUN chmod +x /usr/local/bin/init-letsencrypt.sh
@@ -32,5 +33,10 @@ ARG EMAIL
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
-CMD ["/start.sh"]
+# Copy the renew script and crontab file to the appropriate locations
+COPY renew-certificates.sh /etc/cron.daily/renew-certificates
+RUN chmod +x /etc/cron.daily/renew-certificates
+RUN (crontab -l ; echo "0 0 */20 * * /etc/cron.daily/renew-certificates >> /var/log/cron.log 2>&1") | crontab
 
+# Run cron in the background and start the service
+CMD cron && /start.sh

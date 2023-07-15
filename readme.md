@@ -1,6 +1,6 @@
 # Dockerized NGINX with Let's Encrypt
 
-This repository provides a Docker setup for NGINX with automatic SSL certificate generation using Let's Encrypt's Certbot. This setup is designed to be easily run on a windows computer. Wildcard domain certifictes must be obtained manually, so the automated portion of this setup will only obtain a certificate for your base domain. Follow additional steps below to manually obtain wildcard certificates if needed for your project.
+This repository provides a Docker setup for NGINX with automatic SSL certificate generation using Let's Encrypt's Certbot. This setup is designed to be easily run on a windows computer. Wildcard domain certificates must be obtained manually, so the automated portion of this setup will only obtain a certificate for your base domain. Follow additional steps below to manually obtain wildcard certificates if needed for your project.
 
 NOTE: This process is designed to only get a certificate for the base domain initially, this does not include a www prefix. The www prefix can be handled by wildcard certificates.
 
@@ -30,7 +30,7 @@ NOTE: This process is designed to only get a certificate for the base domain ini
 
    Replace `yourdomain.com` with your actual domain and `youremail@domain.com` with your actual email address.
 
-   Your email address is used to receive messages from letsencrypt regarding your ssl certificates, including exiration warnings.
+   Your email address is used to receive messages from letsencrypt regarding your ssl certificates, including expiration warnings.
 
 
 3. **Direct your domain at your home network**
@@ -40,7 +40,7 @@ NOTE: This process is designed to only get a certificate for the base domain ini
     - Open your C panel
     - Navigate to "Zone Editor" under the "Domains" section
     - Find your domain from the list on the left and click on "+ A Record"
-        - This will ask for a name and ip address. In the name section put your domain <your-domain.com>
+        - This will ask for a name and ip address. In the name section put your domain (\<your-domain.com>)
         - In the ip address section, put your public ipv4 address. You can find this [here](https://whatismyipaddress.com/)
         - If you want to set up wildcard domains, create a new A Record with the name *.<your-domain.com> and the same ip address.
 
@@ -68,7 +68,7 @@ NOTE: This process is designed to only get a certificate for the base domain ini
    This command will start the Docker container. The first time you run it, Docker will build the image based on the Dockerfile in the project.
 
 
-- If you do not need wildcard certificates, you are done. As long as the docker container is running 
+- If you do not need wildcard certificates, you are done. Follow the next step to obtain, or renew, wildcard certificates which must be obtained manually.
 
 
 6. **Obtain wildcard certificates**
@@ -94,11 +94,12 @@ NOTE: This process is designed to only get a certificate for the base domain ini
    Once you're in the container's terminal, run:
 
    ```
-   certbot certonly --manual --preferred-challenges dns -d *.<yourdomain.com>
+   certbot certonly --manual --preferred-challenges dns --email your-email@example.com -d "*.yourdomain.com"
+
    ```
 
-   Replace `<yourdomain.com>` with your actual domain name. 
+   Replace `<yourdomain.com>` with your actual domain name and `your-email@example.com` with the email address you want to receive notices about your certificate. Let's Encrypt will email you a warning when it's time to renew your certificate. 
 
    The process will prompt you to create a TXT record for your domain in order to verify that you own it. This can be done in a similar way to how you created your A records earlier. Be sure to wait a minute after creating the record before continuing the prompt in your terminal to ensure that the new record propagates fully.
 
-Please note that Let's Encrypt certificates expire after 90 days. Make sure to renew them regularly.
+Please note that Let's Encrypt certificates expire after 90 days. The certificate for your base domain will be renewed automatically, but you will need to renew your wildcard certificates manually by following the same steps listed above for obtaining them initially.
